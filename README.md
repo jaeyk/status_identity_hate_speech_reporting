@@ -1,2 +1,2 @@
-# metoo
-Code and data for #MeToo research project
+# Cal-KAIST #MeToo Research Project
+To share code and data for #MeToo research project
