@@ -1,6 +1,6 @@
 # How Popularity and Gender Influence Fighting Hate Speech: Survey Experimental Evidence from YouTube
 
-Jaeung Shim, Jae Yeon Kim, Daegon Cho
+Jaeung Sim, Jae Yeon Kim, Daegon Cho
 
 ## Project roadmap
 
