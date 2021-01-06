@@ -59,10 +59,10 @@ table(df$group)
 Acceptable level of power = 0.8/0.9 
 
 ```{r}
-
-test_df <- data.frame("attitude2reply" = c(-0.0432, -0.0298, -0.0183),
-                      "attitude2replier" = c(-0.0708, -0.0613, -0.00146),
-                      "groups" = c("female_upvoate", "male", "male_upvote"))
+test_df <- data.frame("intention2report" = c(0.202, 0.0130, -0.0310, -0.0323),
+                      "attitude2reply" = c(-0.0674, -0.0338, -0.0162, -0.0584),
+                      "attitude2replier" = c(-0.00546, 0.0398, -0.00254, -0.0647),
+                      "groups" = c("female", "female_upvoate", "male", "male_upvote"))
  
 tidy_pwr_ttest <- function(effect_size){
     pwr.t.test(n = 250, d = effect_size, sig.level = 0.05, power = NULL) %>%
@@ -73,26 +73,34 @@ tidy_pwr_ttest <- function(effect_size){
 power_res <- reduce(
     list( 
     test_df %>% select(groups),
-    map_df(test_df$attitude2reply, tidy_pwr_ttest) %>%
-    rename("attitude2reply"  = "power"),
-map_df(test_df$attitude2replier, tidy_pwr_ttest) %>%
-    rename("attitude2replier" = "power")), 
+        map_df(test_df$intention2report, tidy_pwr_ttest) %>%
+        rename("intention2report"  = "power"),
+        map_df(test_df$attitude2reply, tidy_pwr_ttest) %>%
+        rename("attitude2reply"  = "power"),
+        map_df(test_df$attitude2replier, tidy_pwr_ttest) %>%
+        rename("attitude2replier" = "power")), 
     bind_cols)
 
+power_res
+```
+
+
+```{r}
+
 power_res %>%
-    pivot_longer(cols = contains("attitude"),
+    pivot_longer(cols = c(2:4),
                  names_to = "dv",
                  values_to = "obs") %>%
     ggplot(aes(x = dv, y = obs, fill = groups)) +
         geom_col(position = "dodge") +
-        geom_hline(yintercept = c(0.08), 
+        geom_hline(yintercept = c(0.8), 
                    linetype = "dashed") +
         labs(x = "Outcome variables", 
              y = "Power", 
              fill = "Groups") +
-        scale_x_discrete(labels = c("Attitude to Replier", "Attitude to Reply")) +
         theme_classic()
 
 ggsave(here("outputs", "power_cal.png"))
 
 ```
+
