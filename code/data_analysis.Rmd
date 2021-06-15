@@ -1,0 +1,93 @@
+---
+title: "Data analysis"
+author: "Jae Yeon Kim"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+# Import libs and files 
+
+## Libs 
+
+```{r}
+if (!require(pacman)) install.packages("pacman")
+
+pacman::p_load(tidyverse,
+               naniar,
+               here,
+               purrr,
+               glue,
+               ggthemes,
+               DeclareDesign)
+
+source(here("functions", "utils.r"))
+
+theme_set(theme_clean())
+```
+
+## Files 
+
+```{r}
+# Processed data 
+df <- read_csv(here("processed_data", "main_dataset_20201020.csv"))
+
+names(df)
+```
+
+# Data wrangling 
+
+## Scaling 
+
+```{r}
+# Factorize group variable
+df$group <- as.factor(df$group)
+
+# Every likert scale variable is now on a 0-1 scale.
+df <- df %>%
+    mutate(across(matches("comm|reply|youtube|law"), ~scales::rescale(.x, c(-1,1))))
+
+df
+```
+
+## Missing data 
+
+```{r}
+vis_miss(df)
+```
+
+# Statistical analysis 
+
+## Difference-in-means 
+
+```{r}
+# Create a series of name vectors 
+comment_vec <- names(df)[str_detect(names(df), "comm")]
+reply_vec <- names(df)[str_detect(names(df), "reply")]
+youtube_vec <- names(df)[str_detect(names(df), "youtube")]
+law_vec <- names(df)[str_detect(names(df), "law")]
+
+# Applying the function to the treatment groups and name vectors 
+## Create the vector of names 
+names <- c("comment", "reply", "youtube", "law")
+## Create copying and pasting code
+glue("{names}_summ <- apply_mean_diff(2:5, {names}_vec)")
+
+comment_summ <- apply_mean_diff(2:5, comment_vec)
+reply_summ <- map_dfr(seq(reply_vec), apply_mean_diff_reply)
+youtube_summ <- apply_mean_diff(2:5, youtube_vec)
+law_summ <- apply_mean_diff(2:5, law_vec)
+```
+
+```{r}
+comment_summ %>%
+    ggplot(aes(x = fct_reorder(outcome, estimate), y = estimate, ymax = conf.high, ymin = conf.low, shape = term)) +
+    geom_pointrange() +
+    labs(title = "Intention to report the comment", 
+         x = "Group",
+         y = "Response") +
+    #scale_x_discrete(labels = c("Female", "Female + Upvotes", "Male", "Male + Upvotes")) +
+    facet_wrap(~term) +
+    coord_flip()
+
+ggsave(here("outputs", "comment_summ.png"))
+```
