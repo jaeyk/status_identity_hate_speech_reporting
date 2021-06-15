@@ -18,7 +18,8 @@ pacman::p_load(tidyverse,
                purrr,
                glue,
                ggthemes,
-               DeclareDesign)
+               DeclareDesign,
+               patchwork)
 
 source(here("functions", "utils.r"))
 
@@ -49,7 +50,9 @@ df <- df %>%
 df
 ```
 
-## Missing data 
+## Missing (or non-applicalbe) data 
+
+`reply_` data are not missing. The control group respondents were not exposed to this feature.
 
 ```{r}
 vis_miss(df)
@@ -62,9 +65,10 @@ vis_miss(df)
 ```{r}
 # Create a series of name vectors 
 comment_vec <- names(df)[str_detect(names(df), "comm")]
-reply_vec <- names(df)[str_detect(names(df), "reply")]
+reply_vec <- names(df)[str_detect(names(df), "reply_attitude|reply_socialnorm|reply_liking|reply_user_attitude|reply_user_realname|reply_report|reply_upvotes")]
 youtube_vec <- names(df)[str_detect(names(df), "youtube")]
 law_vec <- names(df)[str_detect(names(df), "law")]
+metoo_vec <- names(df)[str_detect(names(df), "metoo")]
 
 # Applying the function to the treatment groups and name vectors 
 ## Create the vector of names 
@@ -76,18 +80,87 @@ comment_summ <- apply_mean_diff(2:5, comment_vec)
 reply_summ <- map_dfr(seq(reply_vec), apply_mean_diff_reply)
 youtube_summ <- apply_mean_diff(2:5, youtube_vec)
 law_summ <- apply_mean_diff(2:5, law_vec)
+metoo_summ <- map_dfr(2:5, ~custom_mean_diff(., metoo_vec))
+
+reply_term <- c("Female upvote", "Male upvote", "Base comparison", "Upvote comparison")
+
+reply_summ$term <- rep(reply_term, length(reply_vec))
+
+reply_summ <- reply_summ %>% 
+    filter(!str_detect(term, "comparison"))
 ```
 
-```{r}
-comment_summ %>%
-    ggplot(aes(x = fct_reorder(outcome, estimate), y = estimate, ymax = conf.high, ymin = conf.low, shape = term)) +
-    geom_pointrange() +
-    labs(title = "Intention to report the comment", 
-         x = "Group",
-         y = "Response") +
-    #scale_x_discrete(labels = c("Female", "Female + Upvotes", "Male", "Male + Upvotes")) +
-    facet_wrap(~term) +
-    coord_flip()
+## Visualization 
 
-ggsave(here("outputs", "comment_summ.png"))
+Individual plots except reply
+
+```{r}
+comment_plot <- custom_group_plot(comment_summ, "Comment", c("Attitude on Comment = Hate Speech", "Willingness to Report", "Attitude on Commenter", "Willingness to Like", "Atttidue on Comment"))
+
+ggsave(here("outputs", "comment_summ.png"), width = 11)
+
+platform_plot <- custom_group_plot(youtube_summ, "Platform", c("Attitude on Gov Regulation", "Attitude on Self-regulation", "Attitude on YouTube"))
+
+ggsave(here("outputs", "youtube_summ.png"), width = 11)
+
+reply_plot <- custom_group_plot(reply_summ, "Reply", c("Many upvotes", "Willingness to Like", "Peer pressure", "Real name", "Willingness to Report", "Attitude on Replier", "Attitude on Reply")) +
+    labs(subtitle = "Difference in means between treatment groups (focusing on upvote effect)")
+
+ggsave(here("outputs", "reply_summ.png"), width = 11)
+
+law_plot <- custom_group_plot(law_summ, "Legislation", c("Support for Gender Discrimination Law", "Support for Hate Speech Law"))
+
+ggsave(here("outputs", "law_summ.png"), width = 11)
+
+metoo_plot <- custom_group_plot(metoo_summ, "Social Movement", c("Attitude on MeTooMovement"))
+
+ggsave(here("outputs", "metoo_summ.png"), width = 11)
+```
+
+The comprehensive one 
+
+```{r}
+(comment_plot / reply_plot / platform_plot / law_plot / metoo_plot)
+
+ggsave(here("outputs", "all_summ.png"), height = 12, width = 12)
+```
+
+## Conditional treatment effect 
+
+### CATE
+
+```{r}
+nested_df <- df %>% 
+    mutate(age_fac = if_else(age >= median(age), "Old", "Young")) %>%
+    mutate(male_fac = recode(male, 
+                         `1` = "Male",
+                         `0` = "Female")) %>%
+    group_by(factor(male_fac), factor(age_fac)) %>%
+    nest()
+
+cate <- map_dfr(2:5, ~est_cate(nested_df, .)) 
+
+cate_model_out <- map_dfr(cate$model, unnest) %>%
+    select(term, estimate, conf.low, conf.high, outcome) %>%
+    mutate(group = cate$group,
+           male = cate$`factor(male_fac)`,
+           age = cate$`factor(age_fac)`)
+
+cate_model_out %>%
+    mutate(group = recode(group,
+                     `2` = "Female",
+                     `3` = "Female + Upvotes",
+                     `4` = "Male",
+                     `5` = "Male + Upvotes")) %>%
+    ggplot(aes(x = group, y = estimate, ymax = conf.high, ymin = conf.low)) +
+        geom_pointrange() +
+        labs(title = "Willingness to Report",
+         y = "Estimate",
+         x = "",
+         subtitle = "Difference in means between control and treatment groups") +
+        facet_grid(male~age) +
+        geom_hline(yintercept = 0, linetype = 'dashed', col = 'red') +
+        coord_flip()
+
+ggsave(here("outputs", "cate.png"))
 ```
