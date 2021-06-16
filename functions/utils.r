@@ -77,7 +77,7 @@ test_group_plot <- function(df, plot_title) {
         geom_hline(yintercept = 0, linetype = 'dashed', col = 'red')
 }
 
-custom_group_plot <- function(df, plot_title, x_labels) {
+custom_group_plot <- function(df, plot_title, x_labels, n_col = 4) {
  
     df %>%
         mutate(term = recode(term,
@@ -92,9 +92,10 @@ custom_group_plot <- function(df, plot_title, x_labels) {
          x = "",
          subtitle = "Difference in means between control and treatment groups") +
         scale_x_discrete(labels = x_labels) +
-        facet_wrap(~term, ncol = 4) +
+        facet_wrap(~term, ncol = n_col) +
         coord_flip() +
-        geom_hline(yintercept = 0, linetype = 'dashed', col = 'red')
+        geom_hline(yintercept = 0, linetype = 'dashed', col = 'red') +
+        theme(panel.spacing.x = unit(8, "mm"))
 }
 
 # Estimating conditional treatment effects

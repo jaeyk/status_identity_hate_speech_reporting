@@ -95,24 +95,24 @@ reply_summ <- reply_summ %>%
 Individual plots except reply
 
 ```{r}
-comment_plot <- custom_group_plot(comment_summ, "Comment", c("Attitude on Comment = Hate Speech", "Willingness to Report", "Attitude on Commenter", "Willingness to Like", "Atttidue on Comment"))
+comment_plot <- custom_group_plot(comment_summ, "Comment", rev(c("Attitude on Comment = Hate Speech", "Willingness to Report", "Attitude on Commenter", "Willingness to Like", "Atttidue on Comment")))
 
 ggsave(here("outputs", "comment_summ.png"), width = 11)
 
-platform_plot <- custom_group_plot(youtube_summ, "Platform", c("Attitude on Gov Regulation", "Attitude on Self-regulation", "Attitude on YouTube"))
-
-ggsave(here("outputs", "youtube_summ.png"), width = 11)
-
-reply_plot <- custom_group_plot(reply_summ, "Reply", c("Many upvotes", "Willingness to Like", "Peer pressure", "Real name", "Willingness to Report", "Attitude on Replier", "Attitude on Reply")) +
-    labs(subtitle = "Difference in means between treatment groups (focusing on upvote effect)")
+reply_plot <- custom_group_plot(reply_summ, "Reply", rev(c("Many upvotes", "Willingness to Like", "Peer pressure", "Real name", "Willingness to Report", "Attitude on Replier", "Attitude on Reply")), 4) +
+    labs(subtitle = glue("Difference in means between treatment group"))
 
 ggsave(here("outputs", "reply_summ.png"), width = 11)
 
-law_plot <- custom_group_plot(law_summ, "Legislation", c("Support for Gender Discrimination Law", "Support for Hate Speech Law"))
+platform_plot <- custom_group_plot(youtube_summ, "Platform", rev(c("Attitude on Gov Regulation", "Attitude on Self-regulation", "Attitude on YouTube")))
+
+ggsave(here("outputs", "youtube_summ.png"), width = 11)
+
+law_plot <- custom_group_plot(law_summ, "Legislation", rev(c("Gender Discrimination Law", "Hate Speech Law")), 4)
 
 ggsave(here("outputs", "law_summ.png"), width = 11)
 
-metoo_plot <- custom_group_plot(metoo_summ, "Social Movement", c("Attitude on MeTooMovement"))
+metoo_plot <- custom_group_plot(metoo_summ, "Social Movement", c("Attitude on #MeToo Movement"), 4)
 
 ggsave(here("outputs", "metoo_summ.png"), width = 11)
 ```
@@ -120,11 +120,13 @@ ggsave(here("outputs", "metoo_summ.png"), width = 11)
 The comprehensive one 
 
 ```{r}
-(comment_plot / reply_plot / platform_plot / law_plot / metoo_plot) + plot_annotation(
-    title = "Difference in means estimation",
-    tag_levels = 'A')
+(comment_plot / reply_plot) + plot_annotation(tag_levels = "A")
+
+ggsave(here("outputs", "comment_reply.png"), height = 7, width = 8)
+
+(platform_plot / law_plot / metoo_plot) + plot_annotation(tag_levels = 'A')
     
-ggsave(here("outputs", "all_summ.png"), height = 12, width = 12)
+ggsave(here("outputs", "else_summ.png"), height = 10, width = 12)
 ```
 
 ## Conditional treatment effect 
