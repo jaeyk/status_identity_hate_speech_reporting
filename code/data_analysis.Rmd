@@ -120,8 +120,10 @@ ggsave(here("outputs", "metoo_summ.png"), width = 11)
 The comprehensive one 
 
 ```{r}
-(comment_plot / reply_plot / platform_plot / law_plot / metoo_plot)
-
+(comment_plot / reply_plot / platform_plot / law_plot / metoo_plot) + plot_annotation(
+    title = "Difference in means estimation",
+    tag_levels = 'A')
+    
 ggsave(here("outputs", "all_summ.png"), height = 12, width = 12)
 ```
 
