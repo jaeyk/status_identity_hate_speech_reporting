@@ -65,7 +65,7 @@ vis_miss(df)
 ```{r}
 # Create a series of name vectors 
 comment_vec <- names(df)[str_detect(names(df), "comm")]
-reply_vec <- names(df)[str_detect(names(df), "reply_attitude|reply_socialnorm|reply_liking|reply_user_attitude|reply_user_realname|reply_report|reply_upvotes")]
+reply_vec <- names(df)[str_detect(names(df), "reply_attitude|reply_socialnorm|reply_user_attitude")]
 youtube_vec <- names(df)[str_detect(names(df), "youtube")]
 law_vec <- names(df)[str_detect(names(df), "law")]
 metoo_vec <- names(df)[str_detect(names(df), "metoo")]
