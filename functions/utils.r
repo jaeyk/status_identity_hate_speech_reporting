@@ -69,6 +69,7 @@ test_group_plot <- function(df, plot_title) {
                              "group5" = "Male + Upvotes")) %>%
         ggplot(aes(x = fct_reorder(outcome, estimate), y = estimate, ymax = conf.high, ymin = conf.low)) +
         geom_pointrange() +
+        ggrepel::geom_text_repel(aes(label = round(estimate, 2))) +
         labs(title = plot_title, 
              y = "Estimate",
              x = "") +
@@ -87,6 +88,7 @@ custom_group_plot <- function(df, plot_title, x_labels, n_col = 4) {
                      "group5" = "Male + Upvotes")) %>%
         ggplot(aes(x = fct_reorder(outcome, estimate), y = estimate, ymax = conf.high, ymin = conf.low)) +
         geom_pointrange() +
+        ggrepel::geom_text_repel(aes(label = round(estimate, 2))) +
         labs(title = plot_title, 
          y = "Estimate",
          x = "",

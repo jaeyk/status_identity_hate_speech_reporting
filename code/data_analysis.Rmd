@@ -18,6 +18,7 @@ pacman::p_load(tidyverse,
                purrr,
                glue,
                ggthemes,
+               ggrepel,
                DeclareDesign,
                patchwork)
 
@@ -28,11 +29,9 @@ theme_set(theme_clean())
 
 ## Files 
 
-```{r}
+```{r message=TRUE, warning=TRUE, include=FALSE}
 # Processed data 
 df <- read_csv(here("processed_data", "main_dataset_20201020.csv"))
-
-names(df)
 ```
 
 # Data wrangling 
@@ -43,11 +42,9 @@ names(df)
 # Factorize group variable
 df$group <- as.factor(df$group)
 
-# Every likert scale variable is now on a 0-1 scale.
+# Use a -1 to -1 scale.
 df <- df %>%
     mutate(across(matches("comm|reply|youtube|law"), ~scales::rescale(.x, c(-1,1))))
-
-df
 ```
 
 ## Missing (or non-applicalbe) data 
@@ -122,8 +119,10 @@ The comprehensive one
 ```{r}
 (comment_plot / reply_plot) + plot_annotation(tag_levels = "A")
 
-ggsave(here("outputs", "comment_reply.png"), height = 7, width = 8)
+ggsave(here("outputs", "comment_reply.png"), height = 7, width = 10)
+```
 
+```{r}
 (platform_plot / law_plot / metoo_plot) + plot_annotation(tag_levels = 'A')
     
 ggsave(here("outputs", "else_summ.png"), height = 10, width = 12)
