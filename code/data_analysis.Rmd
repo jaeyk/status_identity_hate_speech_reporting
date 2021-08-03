@@ -45,6 +45,8 @@ df$group <- as.factor(df$group)
 # Use a -1 to -1 scale.
 df <- df %>%
     mutate(across(matches("comm|reply|youtube|law"), ~scales::rescale(.x, c(-1,1))))
+
+write.csv(df, here("processed_data", "standardized.csv"))
 ```
 
 ## Missing (or non-applicalbe) data 
@@ -105,7 +107,7 @@ platform_plot <- custom_group_plot(youtube_summ, "Platform", rev(c("Attitude on 
 
 ggsave(here("outputs", "youtube_summ.png"), width = 11)
 
-law_plot <- custom_group_plot(law_summ, "Legislation", rev(c("Gender Discrimination Law", "Hate Speech Law")), 4)
+law_plot <- custom_group_plot(law_summ, "Legislation", rev(c("Gender Discrimination Law", "Social Media Regulation")), 4)
 
 ggsave(here("outputs", "law_summ.png"), width = 11)
 
@@ -123,9 +125,9 @@ ggsave(here("outputs", "comment_reply.png"), height = 7, width = 10)
 ```
 
 ```{r}
-(platform_plot / law_plot / metoo_plot) + plot_annotation(tag_levels = 'A')
+(platform_plot / law_plot) + plot_annotation(tag_levels = 'A')
     
-ggsave(here("outputs", "else_summ.png"), height = 10, width = 12)
+ggsave(here("outputs", "else_summ.png"), height = 8, width = 12)
 ```
 
 ## Conditional treatment effect 
