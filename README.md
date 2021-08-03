@@ -1,8 +1,10 @@
-# How Popularity and Gender Influence Fighting Hate Speech: Survey Experimental Evidence from YouTube
+# How Gender and Popularity Shape Countering Hate Speech During the #MeToo Movement
 
 Jaeung Sim, Jae Yeon Kim, Daegon Cho
 
 ## Project roadmap
+
+The list of project dashboards 
 
 * [frame and theory](https://github.com/jaeungs/metoo/projects/3)
 * [statistical analysis](https://github.com/jaeungs/metoo/projects/2)
