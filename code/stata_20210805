@@ -4,10 +4,10 @@
 
 import delimited "C:\Graduate Research\Working Papers (Realized)\MeToo #1 Framing Contest\Data and Analysis\Code-Data Sharing\metoo_raw_dataset_20201020.csv", encoding(UTF-8)
 
-** Variable Normalization (Min-max Scaling)
+** Variable Normalization (Min-max Scaling with Range [-1, 1])
 foreach v in comm_report comm_attitude comm_user_attitude reply_attitude reply_user_attitude youtube_attitude youtube_selfcorrection youtube_regulation law_individual law_company {
     qui sum `v'
-    gen norm_`v' = (`v' - r(min)) / (r(max) - r(min))
+    gen norm_`v' = (`v' - (r(max) + r(min))/2) / ((r(max) - r(min))/2)
 }
 
 ** Manipulation Checks
