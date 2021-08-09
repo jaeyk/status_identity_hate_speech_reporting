@@ -68,7 +68,9 @@ reply_vec <- names(df)[str_detect(names(df), "reply_attitude|reply_socialnorm|re
 youtube_vec <- names(df)[str_detect(names(df), "youtube")]
 law_vec <- names(df)[str_detect(names(df), "law")]
 metoo_vec <- names(df)[str_detect(names(df), "metoo")]
+```
 
+```{r}
 # Applying the function to the treatment groups and name vectors 
 ## Create the vector of names 
 names <- c("comment", "reply", "youtube", "law")
@@ -103,11 +105,11 @@ reply_plot <- custom_group_plot(reply_summ, "Reply", rev(c("Many upvotes", "Will
 
 ggsave(here("outputs", "reply_summ.png"), width = 11)
 
-platform_plot <- custom_group_plot(youtube_summ, "Platform", rev(c("Attitude on Gov Regulation", "Attitude on Self-regulation", "Attitude on YouTube")))
+platform_plot <- custom_group_plot(youtube_summ, "Platform", rev(c("Attitude on Self-Regulation", "Attitude on User Moderation", "Attitude on YouTube")))
 
 ggsave(here("outputs", "youtube_summ.png"), width = 11)
 
-law_plot <- custom_group_plot(law_summ, "Legislation", rev(c("Gender Discrimination Law", "Social Media Regulation")), 4)
+law_plot <- custom_group_plot(law_summ, "Legislation", rev(c("Gender Discrimination Bill", "Social Media Regulation Bill")), 4)
 
 ggsave(here("outputs", "law_summ.png"), width = 11)
 
