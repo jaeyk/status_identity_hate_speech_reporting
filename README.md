@@ -1,6 +1,6 @@
 # Replication data and code for Identity and Status: When Counterspeech Increases Hate Speech Reporting and Why
 
-Jae Yeon Kim, Jaeung Sim, Daegon Cho
+Authors: Jae Yeon Kim, Jaeung Sim, Daegon Cho
 
 # Session information 
 
@@ -12,12 +12,18 @@ Jae Yeon Kim, Jaeung Sim, Daegon Cho
 
 ## Stata 
 
-# Processed data 
+# Replication data 
 
-* Cleaned and wrangled dataset 
-* Codebook (variable names and basic descriptions are in English; some question item names are in Korean) 
+* [Cleaned and wrangled dataset](https://github.com/jaeyk/status_identity_hate_speech_reporting/blob/main/processed_data/main_dataset_20201020.csv)
+* [Codebook](https://github.com/jaeyk/status_identity_hate_speech_reporting/blob/main/processed_data/codebook.md) (variable names and basic descriptions are in English; some question item names are in Korean) 
 
 # Replication code 
 
-* R markdown for reproducing reproducing Figures 2 (Difference-in-Means Tests for Responses to Hate Speech Comment and Counterspeech Reply) and 3 (Difference-in-Means Tests for Attitudes toward Platform and Legislation)
-* Stata code for reproducing the manipulation checks, Tables 1 (Summary Statistics), 2 (Regression Estimates for Effects of Counter Speech on Intention to Report Hate Speech by Gender and Age), and 3 (Regression Estimates for Effects of Counterspeech on Attitudes toward Platforms and Related Legislation)
+* [R markdown file](https://github.com/jaeyk/status_identity_hate_speech_reporting/blob/main/code/model_visualization.Rmd) for reproducing reproducing 
+    * Figure 2 (Difference-in-Means Tests for Responses to Hate Speech Comment and Counterspeech Reply) 
+    * Figure 3 (Difference-in-Means Tests for Attitudes toward Platform and Legislation)
+* [Stata script](https://github.com/jaeyk/status_identity_hate_speech_reporting/blob/main/code/regression_stata) for reproducing 
+    * The manipulation checks
+    * Table 1 (Summary Statistics)
+    * Table 2 (Regression Estimates for Effects of Counter Speech on Intention to Report Hate Speech by Gender and Age)
+    * Table 3 (Regression Estimates for Effects of Counterspeech on Attitudes toward Platforms and Related Legislation)
