@@ -2,6 +2,8 @@
 
 Authors: Jae Yeon Kim, Jaeung Sim, Daegon Cho
 
+Paper: The link will be added when the paper is published (currently conditional acceptance at **Information Systems Frontiers**).
+
 # Session information 
 
 ## R 
