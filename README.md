@@ -15,7 +15,7 @@ Authors: Jae Yeon Kim, Jaeung Sim, Daegon Cho
 # Replication data 
 
 * [Cleaned and wrangled dataset](https://github.com/jaeyk/status_identity_hate_speech_reporting/blob/main/processed_data/main_dataset_20201020.csv)
-* [Codebook](https://github.com/jaeyk/status_identity_hate_speech_reporting/blob/main/processed_data/codebook.md) (variable names and basic descriptions are in English; some question item names are in Korean) 
+* [Codebook](https://github.com/jaeyk/status_identity_hate_speech_reporting/blob/main/processed_data/codebook.md) (variable names and basic descriptions are in English; some question items are in Korean) 
 
 # Replication code 
 
