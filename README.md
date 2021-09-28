@@ -2,6 +2,16 @@
 
 Jae Yeon Kim, Jaeung Sim, Daegon Cho
 
+# Session information 
+
+## R 
+
+* R version 4.0.4 (2021-02-15)
+* Platform: x86_64-pc-linux-gnu (64-bit)
+* Running under: Ubuntu 21.04
+
+## Stata 
+
 # Processed data 
 
 * Cleaned and wrangled dataset 
