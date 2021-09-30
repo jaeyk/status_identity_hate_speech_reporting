@@ -9,10 +9,12 @@ Paper: The link will be added when the paper is published (currently conditional
 ## R 
 
 * R version 4.0.4 (2021-02-15)
-* Platform: x86_64-pc-linux-gnu (64-bit)
 * Running under: Ubuntu 21.04
 
 ## Stata 
+
+* Stata/SE 14.2 for Windows (64-bit x86-64)
+* Running under: Windows 10 Home
 
 # Replication data 
 
